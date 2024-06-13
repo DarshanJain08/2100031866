@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 const accmpny = ["AMZ", "FLP", "SNP", "MYN", "AZO"];
-const accgt = ["Phone", "Computer", "TV", "Earphone", "Tablet", "Charger", "Mouse", "Keypad", "Bluetooth", "Pendrive", "Remote", "Speaker", "Headset", "Laptop", "PC"];
+const accgt = [ "Computer","Phone", "TV", "Earphone", "Tablet",  "Bluetooth","Charger", "Mouse", "Keypad", "Pendrive", "Remote", "Laptop", "Headset", "Speaker", "PC"];
 
 let accessToken = '';
 
@@ -52,7 +52,7 @@ async function fetchProducts(company, category, top, minPrice, maxPrice) {
     return response.data;
 }
 
-async function fetchProductDetails(company, category, productid) {
+async function getData(company, category, productid) {
     const response = await axios.get(`http://20.244.56.144/test/companies/${company}/categories/${category}/products/${productid}`, {
         headers: {
             Authorization: `Bearer ${accessToken}`
@@ -92,9 +92,9 @@ app.get('/categories/:categoryname/products/:productid', async (req, res) => {
             return res.status(400).json({ error: 'Invalid company or category' });
         }
 
-        const productDetails = await fetchProductDetails(company, categoryname, productid);
+        const prodData = await getData(company, categoryname, productid);
 
-        res.json(productDetails);
+        res.json(prodData);
     } catch (error) {
         console.error('Error fetching product details:', error);
         res.status(500).json({ error: 'Internal server error' });
